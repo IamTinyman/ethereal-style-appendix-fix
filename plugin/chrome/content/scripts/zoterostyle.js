@@ -17124,7 +17124,7 @@ ${JSON.stringify(noteData)}`);
     return removedReference && skipping ? cleaned.replace(/\n+$/, "") : cleaned;
   }
   function normalizeMathLatex(latex) {
-    return String(latex ?? "").replace(/\\bg_white\b/gi, "").replace(/\\bg\{white\}/gi, "").trim();
+    return String(latex ?? "").replace(/\\bg_?white\b/gi, "").replace(/\\bg\{\s*white\s*\}/gi, "").trim();
   }
   var FulltextTranslate = class {
     constructor() {

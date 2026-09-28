@@ -59,8 +59,8 @@ export function removeReferenceSection(markdown: string): string {
 /** Remove renderer directives that must never reach translated Markdown. */
 export function normalizeMathLatex(latex: string): string {
   return String(latex ?? "")
-    .replace(/\\bg_white\b/gi, "")
-    .replace(/\\bg\{white\}/gi, "")
+    .replace(/\\bg_?white\b/gi, "")
+    .replace(/\\bg\{\s*white\s*\}/gi, "")
     .trim();
 }
 

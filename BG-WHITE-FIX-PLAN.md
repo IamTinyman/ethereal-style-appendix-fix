@@ -15,8 +15,8 @@ References/Appendix 修复后，更多后续内容进入渲染流程，因此原
 
 ## 修复
 
-1. 增加 `normalizeMathLatex()`，在缓存、渲染和回退显示前移除 `\\bg_white` 与
-   `\\bg{white}`。
+1. 增加 `normalizeMathLatex()`，在缓存、渲染和回退显示前移除 `\\bg_white`、
+   `\\bgwhite` 与 `\\bg{white}`。
 2. CodeCogs 请求使用标准的 `\\bg{white}` 写法。
 3. 增加 `\\(...\\)` 和 `\\[...\\]` 公式识别。
 4. CodeCogs 请求失败时写入日志，不再静默吞掉错误。
