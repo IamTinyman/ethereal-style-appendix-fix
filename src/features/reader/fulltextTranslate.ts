@@ -56,6 +56,14 @@ export function removeReferenceSection(markdown: string): string {
   return removedReference && skipping ? cleaned.replace(/\n+$/, "") : cleaned;
 }
 
+/** Remove renderer directives that must never reach translated Markdown. */
+export function normalizeMathLatex(latex: string): string {
+  return String(latex ?? "")
+    .replace(/\\bg_white\b/gi, "")
+    .replace(/\\bg\{white\}/gi, "")
+    .trim();
+}
+
 export interface FulltextPageCountItem {
   attachmentText?: string | Promise<string>;
   totalPages?: number | string | (() => number | string | Promise<number | string>);

@@ -65,6 +65,21 @@ src/features/reader/fulltextTranslate.ts
 
 每种来源都会写入日志，便于确认 MinerU 实际收到的页码范围。
 
+### 3. 修复数学公式前出现 `bg_white`
+
+原有公式渲染请求使用了 `\\bg_white`，而且只识别 `$...$` 和 `$$...$$`。
+当 CodeCogs 渲染失败，或 MinerU 输出 `\\(...\\)` / `\\[...\\]` 时，渲染指令可能
+出现在最终文本中。
+
+现在会：
+
+- 清理公式中的 `\\bg_white` 和 `\\bg{white}`；
+- 使用 CodeCogs 文档中的 `\\bg{white}` 请求格式；
+- 支持 `$...$`、`$$...$$`、`\\(...\\)`、`\\[...\\]`；
+- 记录 CodeCogs 请求失败，便于后续排查。
+
+详细方案见 [`BG-WHITE-FIX-PLAN.md`](BG-WHITE-FIX-PLAN.md)。
+
 ## 测试
 
 测试覆盖：

@@ -16,10 +16,27 @@ const helperSource = bundle.match(
 assert.ok(helperSource, "patched helper must be present in the release bundle");
 const context = {};
 vm.runInNewContext(
-  `${helperSource[0].replace(/\n  var FulltextTranslate = class \{$/, "")}\nglobalThis.removeReferenceSection = removeReferenceSection;`,
+  `${helperSource[0].replace(/\n  var FulltextTranslate = class \{$/, "")}\nglobalThis.removeReferenceSection = removeReferenceSection;\nglobalThis.normalizeMathLatex = normalizeMathLatex;`,
   context,
 );
 const { removeReferenceSection } = context;
+
+const protectMathMethod = bundle.match(
+  /    protectMath\(text\) \{([\s\S]*?)\n    \}\n    async preloadMathSvgs/,
+);
+assert.ok(protectMathMethod, "math protection helper must be present in the release bundle");
+vm.runInNewContext(
+  `globalThis.protectMath = function protectMath(text) {${protectMathMethod[1]}}`,
+  context,
+);
+const restoreMathMethod = bundle.match(
+  /    restoreAndRenderMath\(text\) \{([\s\S]*?)\n    \}\n    async md2html/,
+);
+assert.ok(restoreMathMethod, "math restore helper must be present in the release bundle");
+vm.runInNewContext(
+  `globalThis.restoreAndRenderMath = function restoreAndRenderMath(text) {${restoreMathMethod[1]}}`,
+  context,
+);
 
 const pageMethod = bundle.match(
   /    async getTotalPages\(pdfItem, signal\) \{([\s\S]*?)\n    \}\n    async parseByFile/,
@@ -98,4 +115,16 @@ assert.equal(
 assert.ok(pageLogs.some((message) => message.includes("totalPages")));
 assert.ok(pageLogs.some((message) => message.includes("attachmentText")));
 
-console.log(`fulltextTranslate fixtures passed (${fixtures.length}); page-count checks passed`);
+assert.equal(context.normalizeMathLatex("\\bg_white x^2"), "x^2");
+const mathHost = { mathCache: [] };
+const maskedMath = context.protectMath.call(
+  mathHost,
+  "$x$ \\(\\bg_white y\\) \\[z\\] $$w$$",
+);
+assert.equal(mathHost.mathCache.length, 4, "protect all supported math delimiters");
+assert.ok(mathHost.mathCache.every((item) => !item.latex.includes("bg_white")));
+assert.match(maskedMath, /MTHZ\d+Z/);
+assert.equal(context.restoreAndRenderMath.call(mathHost, "MTHZ3Z"), "$y$");
+assert.match(bundle, /const prefix = item\.isBlock \? "\\\\bg\{white\} "/);
+
+console.log(`fulltextTranslate fixtures passed (${fixtures.length}); page-count and bg_white checks passed`);

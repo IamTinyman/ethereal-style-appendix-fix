@@ -17123,6 +17123,9 @@ ${JSON.stringify(noteData)}`);
     }).join("\n");
     return removedReference && skipping ? cleaned.replace(/\n+$/, "") : cleaned;
   }
+  function normalizeMathLatex(latex) {
+    return String(latex ?? "").replace(/\\bg_white\b/gi, "").replace(/\\bg\{white\}/gi, "").trim();
+  }
   var FulltextTranslate = class {
     constructor() {
       this.disposed = false;
@@ -17648,13 +17651,21 @@ ${JSON.stringify(noteData)}`);
       return results;
     }
     protectMath(text) {
-      let res = text.replace(/\$\$([\s\S]+?)\$\$/g, (match, p1) => {
-        this.mathCache.push({ latex: p1, isBlock: true });
+      const remember = (latex, isBlock) => {
+        this.mathCache.push({ latex: normalizeMathLatex(latex), isBlock });
         return ` MTHZ${this.mathCache.length - 1}Z `;
+      };
+      let res = text.replace(/\$\$([\s\S]+?)\$\$/g, (match, p1) => {
+        return remember(p1, true);
+      });
+      res = res.replace(/\\\[([\s\S]+?)\\\]/g, (match, p1) => {
+        return remember(p1, true);
       });
       res = res.replace(/\$([^$]+?)\$/g, (match, p1) => {
-        this.mathCache.push({ latex: p1, isBlock: false });
-        return ` MTHZ${this.mathCache.length - 1}Z `;
+        return remember(p1, false);
+      });
+      res = res.replace(/\\\(([\s\S]+?)\\\)/g, (match, p1) => {
+        return remember(p1, false);
       });
       return res;
     }
@@ -17666,8 +17677,10 @@ ${JSON.stringify(noteData)}`);
       let completed = 0;
       const tasks = this.mathCache.map((item) => async () => {
         this.ensureActive(signal);
-        const prefix = item.isBlock ? "\\bg_white " : "\\bg_white \\inline ";
-        const url = `https://latex.codecogs.com/svg.image?${encodeURIComponent(prefix + item.latex.trim())}`;
+        const prefix = item.isBlock ? "\\bg{white} " : "\\bg{white} \\inline ";
+        const latex = normalizeMathLatex(item.latex);
+        item.latex = latex;
+        const url = `https://latex.codecogs.com/svg.image?${encodeURIComponent(prefix + latex)}`;
         try {
           const res = await window.fetch(url, { signal });
           this.ensureActive(signal);
@@ -17679,8 +17692,11 @@ ${JSON.stringify(noteData)}`);
               const b64 = window.btoa(unescape(encodeURIComponent(cleanSvg)));
               item.base64 = `data:image/svg+xml;base64,${b64}`;
             }
+          } else {
+            ztoolkit.log(`[Math Render] CodeCogs 请求失败: ${res.status}`);
           }
         } catch (e) {
+          ztoolkit.log(`[Math Render] CodeCogs 请求异常: ${e}`);
         }
         this.ensureActive(signal);
         completed++;
@@ -17701,7 +17717,7 @@ ${JSON.stringify(noteData)}`);
           const style2 = item.isBlock ? `display: block; margin: 1em auto; max-width: 100%;` : `display: inline-block; vertical-align: middle; max-width: 100%;`;
           return `<img src="${item.base64}" style="${style2}" alt="formula" />`;
         }
-        return item ? item.isBlock ? `$$${item.latex}$$` : `$${item.latex}$` : match;
+        return item ? item.isBlock ? `$$${normalizeMathLatex(item.latex)}$$` : `$${normalizeMathLatex(item.latex)}$` : match;
       });
     }
     async md2html(mdString, signal) {
@@ -17746,7 +17762,10 @@ ${JSON.stringify(noteData)}`);
           b.type = "ignore";
           continue;
         }
-        if (text.startsWith("$$") && text.endsWith("$$")) {
+        if (
+          text.startsWith("$$") && text.endsWith("$$") ||
+          text.startsWith("\\[") && text.endsWith("\\]")
+        ) {
           b.type = "math";
           continue;
         }
@@ -17869,9 +17888,13 @@ ${JSON.stringify(noteData)}`);
           continue;
         }
         if (block.type === "math") {
-          const cleanLatex = block.original.replace(/\$\$/g, "");
+          const cleanLatex = normalizeMathLatex(
+            block.original
+              .replace(/^\$\$|\$\$$/g, "")
+              .replace(/^\\\[|\\\]$/g, "")
+          );
           bodyString += `<div style="text-align: center; margin: 1em 0; overflow-x: auto;">
-          <img src="${this.mathCache.find((m) => m.latex === cleanLatex)?.base64 || ""}" style="max-width: 100%;" />
+          <img src="${this.mathCache.find((m) => normalizeMathLatex(m.latex) === cleanLatex)?.base64 || ""}" style="max-width: 100%;" />
         </div>`;
           continue;
         }
