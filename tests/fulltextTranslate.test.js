@@ -118,6 +118,7 @@ assert.ok(pageLogs.some((message) => message.includes("attachmentText")));
 assert.equal(context.normalizeMathLatex("\\bg_white x^2"), "x^2");
 assert.equal(context.normalizeMathLatex("\\bgwhite x^2"), "x^2");
 assert.equal(context.normalizeMathLatex("\\bg{ white } x^2"), "x^2");
+assert.equal(context.normalizeMathLatex("\\bgwhite $$x^2$$"), "$$x^2$$");
 const mathHost = { mathCache: [] };
 const maskedMath = context.protectMath.call(
   mathHost,

@@ -17722,7 +17722,7 @@ ${JSON.stringify(noteData)}`);
     }
     async md2html(mdString, signal) {
       this.ensureActive(signal);
-      let cleanedMdString = removeReferenceSection(mdString);
+      let cleanedMdString = normalizeMathLatex(removeReferenceSection(mdString));
       cleanedMdString = cleanedMdString.replace(
         /A\s*R\s*T\s*I\s*C\s*L\s*E\s*I\s*N\s*F\s*O/gi,
         ""
@@ -17848,7 +17848,7 @@ ${JSON.stringify(noteData)}`);
       this.progressElement = null;
       const tasks = translatableBlocks.map((block) => async () => {
         this.ensureActive(signal);
-        let textToTranslate = block.originalProtected;
+        let textToTranslate = normalizeMathLatex(block.originalProtected);
         if (block.type.startsWith("h"))
           textToTranslate = textToTranslate.replace(/^(#{1,6})\s+/, "");
         block.translated = await this.translateWithRetry(
@@ -17901,9 +17901,9 @@ ${JSON.stringify(noteData)}`);
         const safeOriginal = this.restoreAndRenderMath(
           this.escapeHtml(block.originalProtected)
         );
-        const rawTranslated = block.translated || getString("fulltext-no-translation-result", {
+        const rawTranslated = normalizeMathLatex(block.translated || getString("fulltext-no-translation-result", {
           args: { text: block.originalProtected || "" }
-        });
+        }));
         const safeTranslated = this.restoreAndRenderMath(
           this.escapeHtml(rawTranslated)
         );
