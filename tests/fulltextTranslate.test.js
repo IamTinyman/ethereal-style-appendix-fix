@@ -128,6 +128,7 @@ assert.equal(mathHost.mathCache.length, 4, "protect all supported math delimiter
 assert.ok(mathHost.mathCache.every((item) => !item.latex.includes("bg_white")));
 assert.match(maskedMath, /MTHZ\d+Z/);
 assert.equal(context.restoreAndRenderMath.call(mathHost, "MTHZ3Z"), "$y$");
-assert.match(bundle, /const prefix = item\.isBlock \? "\\\\bg\{white\} "/);
+assert.match(bundle, /const prefix = item\.isBlock \? "" : "\\\\inline "/);
+assert.doesNotMatch(bundle, /const prefix = item\.isBlock \? "\\\\bg/);
 
 console.log(`fulltextTranslate fixtures passed (${fixtures.length}); page-count and bg_white checks passed`);

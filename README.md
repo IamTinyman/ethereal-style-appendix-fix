@@ -74,7 +74,7 @@ src/features/reader/fulltextTranslate.ts
 现在会：
 
 - 清理公式中的 `\\bg_white`、`\\bgwhite` 和 `\\bg{white}`；
-- 使用 CodeCogs 文档中的 `\\bg{white}` 请求格式；
+- 不再向 CodeCogs 请求附加背景指令；块公式直接发送 LaTeX，行内公式只保留 `\\inline`；
 - 支持 `$...$`、`$$...$$`、`\\(...\\)`、`\\[...\\]`；
 - 记录 CodeCogs 请求失败，便于后续排查。
 

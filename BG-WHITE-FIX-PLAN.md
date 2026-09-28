@@ -18,7 +18,8 @@ References/Appendix 修复后，更多后续内容进入渲染流程，因此原
 1. 增加 `normalizeMathLatex()`，在缓存、渲染和回退显示前移除 `\\bg_white`、
    `\\bgwhite` 与 `\\bg{white}`。
 2. 在 Markdown 输入和翻译结果层再次清理这些指令，覆盖公式定界符外的残留。
-3. CodeCogs 请求使用标准的 `\\bg{white}` 写法。
+3. CodeCogs 请求不再附加背景指令；块公式直接发送 LaTeX，行内公式只保留
+   CodeCogs 能正常识别的 `\\inline`。
 4. 增加 `\\(...\\)` 和 `\\[...\\]` 公式识别。
 5. CodeCogs 请求失败时写入日志，不再静默吞掉错误。
 6. 保留原有 `$...$`、`$$...$$`、公式图片、翻译和快照流程。

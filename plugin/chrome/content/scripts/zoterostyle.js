@@ -17677,7 +17677,7 @@ ${JSON.stringify(noteData)}`);
       let completed = 0;
       const tasks = this.mathCache.map((item) => async () => {
         this.ensureActive(signal);
-        const prefix = item.isBlock ? "\\bg{white} " : "\\bg{white} \\inline ";
+        const prefix = item.isBlock ? "" : "\\inline ";
         const latex = normalizeMathLatex(item.latex);
         item.latex = latex;
         const url = `https://latex.codecogs.com/svg.image?${encodeURIComponent(prefix + latex)}`;
