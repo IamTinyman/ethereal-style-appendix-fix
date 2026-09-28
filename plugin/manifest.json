@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "Ethereal Style",
+  "version": "6.0.86",
+  "description": "Ethereal Style for Zotero",
+  "homepage_url": "https://github.com/muisedestiny/zotero-style#readme",
+  "author": "Polygon",
+  "icons": {
+    "48": "chrome/content/icons/favicon@0.5x.png",
+    "96": "chrome/content/icons/favicon.png"
+  },
+  "applications": {
+    "zotero": {
+      "id": "zoterostyle@polygon.org",
+      "update_url": "https://raw.giteeusercontent.com/MuiseDestiny/plugins/raw/master/update.json",
+      "strict_min_version": "6.999",
+      "strict_max_version": "10.*"
+    }
+  }
+}

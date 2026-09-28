@@ -1,0 +1,220 @@
+/* Semantic colors from Reader themes at c12c65e3f01414ae244f6102da4028c700cf6584. */
+.jev-window,
+.jev-credentials {
+  color: var(--fill-primary);
+  font: menu;
+  line-height: 1.5;
+}
+.jev-window {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 480px;
+  padding: 24px 28px;
+  background: var(--material-background);
+}
+body:has(.jev-window) {
+  margin: 0;
+}
+.jev-window > header,
+.jev-window > footer {
+  flex: none;
+}
+.jev-setup,
+.jev-preview {
+  flex: 1;
+  min-height: 0;
+}
+.jev-setup {
+  overflow: auto;
+}
+.jev-preview {
+  display: flex;
+  flex-direction: column;
+}
+.jev-preview > h2,
+.jev-preview > p {
+  flex: none;
+}
+.jev-window h1 {
+  font-size: 24px;
+  margin: 0;
+}
+.jev-window h2 {
+  font-size: 17px;
+}
+.jev-window h3,
+.jev-credentials h3 {
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+.jev-window p,
+.jev-credentials p {
+  color: var(--fill-secondary);
+  margin: 8px 0 14px;
+}
+.jev-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+}
+.jev-credentials label,
+.jev-mode label {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.jev-window button,
+.jev-credentials button,
+.jev-window input:not([type="checkbox"]):not([type="radio"]),
+.jev-credentials input {
+  font: inherit;
+  box-sizing: border-box;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 7px 10px;
+  color: var(--fill-primary);
+  background: var(--material-background);
+}
+.jev-window button,
+.jev-credentials button {
+  /* Zotero's platform skin gives buttons a fixed native height. */
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  max-height: none;
+  min-height: 32px;
+  line-height: 1.25;
+  margin: 0;
+  background: var(--material-button);
+  cursor: pointer;
+}
+.jev-window button:hover,
+.jev-credentials button:hover {
+  background: var(--material-mix-quinary);
+}
+.jev-window button.jev-primary {
+  background: var(--accent-blue);
+  color: var(--accent-white);
+  border-color: var(--accent-blue);
+}
+.jev-window button:disabled,
+.jev-credentials button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.jev-window :focus-visible,
+.jev-credentials :focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+.jev-credentials input:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: none;
+}
+.jev-window input[type="checkbox"],
+.jev-window input[type="radio"] {
+  accent-color: var(--accent-blue);
+  flex: none;
+}
+.jev-mode {
+  border: 0;
+  padding: 0;
+  margin: 16px 0;
+}
+.jev-mode legend {
+  padding: 0;
+  margin-bottom: 6px;
+}
+.jev-mode label {
+  margin: 6px 0;
+  cursor: pointer;
+}
+.jev-window input[type="search"] {
+  flex: 1;
+  min-width: 180px;
+}
+.jev-credentials input[type="password"] {
+  width: min(100%, 360px);
+}
+.jev-collection-list {
+  max-height: 260px;
+  overflow: auto;
+  border: 1px solid var(--color-border50);
+  border-radius: 6px;
+  padding: 8px;
+  margin: 12px 0;
+}
+.jev-collection-list label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+.jev-collection-list label:hover {
+  background: var(--fill-quinary);
+}
+.jev-table-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  border: 1px solid var(--color-border50);
+  border-radius: 6px;
+}
+.jev-window table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.jev-window th {
+  text-align: start;
+  position: sticky;
+  top: 0;
+  background: var(--material-sidepane);
+  z-index: 1;
+}
+.jev-window td,
+.jev-window th {
+  padding: 10px;
+  border-bottom: 1px solid var(--color-border50);
+  vertical-align: top;
+}
+.jev-window td {
+  overflow-wrap: anywhere;
+  max-width: 300px;
+}
+.jev-window td small {
+  display: block;
+  color: var(--fill-secondary);
+  margin-top: 4px;
+}
+.jev-window footer {
+  margin-top: 20px;
+  border-top: 1px solid var(--color-border50);
+  padding-top: 10px;
+}
+.jev-window footer .jev-actions {
+  justify-content: flex-end;
+  margin-bottom: 0;
+}
+.jev-window [hidden],
+.jev-preference-settings[hidden] {
+  display: none !important;
+}
+
+.jev-preference-settings {
+  margin-inline-start: 24px;
+  padding: 0;
+}
+.jev-preference-settings .jev-actions {
+  margin-bottom: 0;
+}

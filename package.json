@@ -1,0 +1,9 @@
+{
+  "name": "ethereal-style-appendix-fix",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/fulltextTranslate.test.js",
+    "build:xpi": "node scripts/build-xpi.mjs"
+  }
+}

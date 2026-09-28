@@ -1,0 +1,1058 @@
+<linkset>
+  <html:link rel="localization" href="zoterostyle-preferences.ftl" />
+  <html:link rel="stylesheet" href="chrome://zoterostyle/content/jevClassification.css" />
+</linkset>
+<html:style>
+  description { opacity: 0.7; }
+
+  .section {
+    border-top: var(--material-panedivider) !important;
+    margin-top: 1em !important;
+    padding-top: 1em;
+  }
+
+  .pro-functions-section {
+    border-top: 0 !important;
+    margin-top: 1em !important;
+    padding-top: 0 !important;
+  }
+
+  /* ── Tab nav wrapper (position context for arrows) ── */
+  .style-tabs-wrapper {
+    display: grid;
+    grid-template-columns: 0 minmax(0, 1fr) 0;
+    position: relative;
+    border-radius: 8px 8px 0 0;
+    background: var(--material-mix-quarternary, #f5f5f5);
+    overflow: hidden;
+  }
+
+  /* The scrollable strip itself */
+  .style-tabs-nav {
+    grid-column: 2;
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    background: var(--material-mix-quarternary, #f5f5f5);
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    min-width: 0;
+  }
+
+  /* ‹ › arrows float absolutely — zero layout impact */
+  .style-tab-arrow {
+    position: relative !important;
+    grid-row: 1 !important;
+    z-index: 1 !important;
+    appearance: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    font-size: 18px !important;
+    font-weight: 300 !important;
+    line-height: 1 !important;
+    color: var(--fill-secondary, #888) !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    overflow: hidden !important;
+  }
+  .style-tabs-wrapper[data-overflow="true"] {
+    grid-template-columns: 32px minmax(0, 1fr) 32px;
+  }
+
+  .style-tabs-wrapper[data-overflow="true"] .style-tab-arrow {
+    visibility: visible !important;
+    width: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+  }
+  .style-tab-arrow:disabled {
+    color: var(--fill-quarternary, #bbb) !important;
+    cursor: default !important;
+  }
+
+  .style-tab-arrow:not(:disabled):hover { color: var(--fill-primary, #333) !important; }
+
+  #style-tab-prev {
+    grid-column: 1 !important;
+    border-right: 1px solid var(--material-panedivider) !important;
+  }
+
+  #style-tab-next {
+    grid-column: 3 !important;
+    border-left: 1px solid var(--material-panedivider) !important;
+  }
+
+  /* sliding indicator */
+  #style-tab-indicator {
+    position: absolute;
+    bottom: 1px;
+    height: 3px;
+    background: var(--accent-blue);
+    border-radius: 9999px;
+    transition: left 0.22s cubic-bezier(.4,0,.2,1), width 0.22s cubic-bezier(.4,0,.2,1);
+    pointer-events: none;
+  }
+
+  .style-tab-btn {
+    position: relative !important;
+    appearance: none !important;
+    box-sizing: border-box !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    padding: 11px 8px !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    color: var(--fill-secondary, #666) !important;
+    white-space: nowrap !important;
+    transition: color 0.15s !important;
+  }
+
+  .style-tab-btn:hover { color: var(--fill-primary, #333) !important; }
+
+  .style-tab-btn[data-active="true"] {
+    color: var(--accent-blue) !important;
+    font-weight: 500 !important;
+    background: transparent !important;
+    box-shadow: inset 0 -3px 0 var(--accent-blue) !important;
+  }
+
+  .style-tabs-nav[data-indicator-ready="true"] .style-tab-btn[data-active="true"] {
+    box-shadow: none !important;
+  }
+
+  .style-tab-content { margin-top: 0; }
+
+  /* ── info card (replaces plain gray description) ── */
+  .tab-info-card {
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    background: linear-gradient(135deg, rgba(25,110,181,.07) 0%, rgba(25,110,181,.02) 100%) !important;
+    border: 1px solid rgba(25,110,181,.16) !important;
+    border-radius: 10px !important;
+    padding: 13px 15px !important;
+    margin-bottom: 1em !important;
+  }
+  .tab-info-icon-wrap {
+    flex-shrink: 0 !important;
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 50% !important;
+    background-color: rgba(25,110,181,.12) !important;
+    color: #196eb5 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .preference-lucide-icon {
+    width: 24px !important;
+    height: 24px !important;
+    display: block !important;
+  }
+  .tab-info-body { flex: 1 !important; min-width: 0 !important; }
+  .tab-info-title {
+    font-weight: 600 !important;
+    font-size: 13.5px !important;
+    margin-bottom: 3px !important;
+    color: var(--fill-primary, #111) !important;
+  }
+  .tab-info-desc {
+    font-size: 11.5px !important;
+    color: var(--fill-secondary, #666) !important;
+    line-height: 1.55 !important;
+  }
+  .tab-info-steps {
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    margin-top: 7px !important;
+    flex-wrap: wrap !important;
+  }
+  .tab-step {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    background: rgba(25,110,181,.09) !important;
+    border-radius: 20px !important;
+    padding: 3px 9px 3px 3px !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+    color: var(--fill-primary, #333) !important;
+  }
+  .tab-step-num {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    border-radius: 50% !important;
+    background: #196eb5 !important;
+    color: #fff !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    flex-shrink: 0 !important;
+  }
+  .tab-step-arrow {
+    color: var(--fill-tertiary, #bbb) !important;
+    font-size: 13px !important;
+  }
+
+  .indent {
+    margin-left: 2em;
+    display: inline-block;
+  }
+
+  .rating-storage-control {
+    margin-inline-start: 2em;
+  }
+
+  .reading-progress-recording-control {
+    /* Match the storage illustration; the pause color keeps the same saturation and lightness. */
+    --reading-progress-recording-active-color: #196eb5;
+    --reading-progress-recording-paused-color: #b58a19;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1.5em;
+    align-items: center;
+    margin-top: 1.25em;
+    padding-top: 1.1em;
+    border-top: var(--material-panedivider);
+  }
+  .reading-progress-recording-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.55em;
+    font-weight: 500;
+  }
+  .reading-progress-recording-status {
+    width: 8px;
+    height: 8px;
+    min-width: 8px;
+    border-radius: 50%;
+    background: var(--reading-progress-recording-active-color);
+  }
+  .reading-progress-recording-description {
+    margin-top: 0.35em;
+    color: var(--fill-secondary);
+    font-size: 0.9em;
+    line-height: 1.45;
+  }
+  .reading-progress-recording-button {
+    --reading-progress-recording-accent: var(--reading-progress-recording-active-color);
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    gap: 0.35em;
+    min-width: 7em;
+    min-height: 28px;
+    margin: 0;
+    padding: 3px 9px;
+    color: var(--fill-primary);
+    background: var(--material-button);
+    border: var(--material-border);
+    border-radius: 5px;
+    font: inherit;
+    font-size: 0.88em;
+    font-weight: 500;
+    letter-spacing: 0;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .reading-progress-recording-button[data-recording="false"] {
+    --reading-progress-recording-accent: var(--reading-progress-recording-paused-color);
+  }
+  .reading-progress-recording-control[data-recording="false"]
+    .reading-progress-recording-status {
+    background: var(--reading-progress-recording-paused-color);
+  }
+  .reading-progress-recording-button:hover {
+    background: color-mix(
+      in srgb,
+      var(--reading-progress-recording-accent) 8%,
+      var(--material-button)
+    );
+  }
+  .reading-progress-recording-button .preference-filled-media-icon {
+    display: block;
+    width: 14px !important;
+    height: 14px !important;
+    color: var(--reading-progress-recording-accent);
+  }
+  .reading-progress-recording-button > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+  }
+  .reading-progress-recording-control [hidden] {
+    display: none !important;
+  }
+
+  @media (max-width: 560px) {
+    .reading-progress-recording-control {
+      grid-template-columns: 1fr;
+      gap: 0.85em;
+    }
+    .reading-progress-recording-button {
+      justify-self: end;
+    }
+  }
+
+  /* ── 2-col checkbox grid (columns tab) ── */
+  .checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1.5em;
+  }
+
+  /* ── Pro Functions tab nav (mirrors Functions tab styles) ── */
+  .pro-tabs-nav {
+    grid-column: 2;
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    background: var(--material-mix-quarternary, #f5f5f5);
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    min-width: 0;
+  }
+  .pro-tab-btn {
+    position: relative !important;
+    appearance: none !important;
+    box-sizing: border-box !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    padding: 11px 8px !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    color: var(--fill-secondary, #666) !important;
+    white-space: nowrap !important;
+    transition: color 0.15s !important;
+  }
+  .pro-tab-btn:hover { color: var(--fill-primary, #333) !important; }
+  .pro-tab-btn[data-active="true"] {
+    color: var(--accent-blue) !important;
+    font-weight: 500 !important;
+    background: transparent !important;
+    box-shadow: inset 0 -3px 0 var(--accent-blue) !important;
+  }
+  .pro-tabs-nav[data-indicator-ready="true"] .pro-tab-btn[data-active="true"] {
+    box-shadow: none !important;
+  }
+  .pro-tab-content { margin-top: 0; }
+  #pro-tab-indicator {
+    position: absolute;
+    bottom: 1px;
+    height: 3px;
+    background: var(--accent-blue);
+    border-radius: 9999px;
+    transition: left 0.22s cubic-bezier(.4,0,.2,1), width 0.22s cubic-bezier(.4,0,.2,1);
+    pointer-events: none;
+  }
+  #pro-tab-prev {
+    grid-column: 1 !important;
+    border-right: 1px solid var(--material-panedivider) !important;
+  }
+  #pro-tab-next {
+    grid-column: 3 !important;
+    border-left: 1px solid var(--material-panedivider) !important;
+  }
+</html:style>
+
+<vbox id="zotero-prefpane-zoterostyle" onload="Zotero.ZoteroStyle.hooks.onPrefsEvent('load', {window})">
+
+  <!-- ══════════════ MAIN FUNCTIONS ══════════════ -->
+  <groupbox>
+    <html:h1>Functions</html:h1>
+
+    <!-- Bordered card: tab nav at top, content below -->
+    <html:div class="style-tab-card" style="border:var(--material-panedivider); border-radius:8px; margin-top:0; overflow:visible;">
+
+      <!-- Tab nav: scrollable strip with floating ‹ › arrows -->
+      <html:div class="style-tabs-wrapper">
+        <html:div class="style-tabs-nav" data-pref-key="extensions.zotero.zoterostyle.prefs.activeTab" id="style-tabs-scroll">
+          <html:button class="style-tab-btn" data-active="true" data-target="tab-columns"
+            data-l10n-id="zoterostyle-column-functions"></html:button>
+          <html:button class="style-tab-btn" data-target="tab-gallery"
+            data-l10n-id="zoterostyle-gallery-view-function"></html:button>
+          <html:button class="style-tab-btn" data-target="tab-viewmgr"
+            data-l10n-id="zoterostyle-view-manager-function"></html:button>
+          <html:button class="style-tab-btn" data-target="tab-reader"
+            data-l10n-id="zoterostyle-reader-functions"></html:button>
+          <html:button class="style-tab-btn" data-target="tab-sidepanel"
+            data-l10n-id="zoterostyle-sidepanel-functions"></html:button>
+          <html:button class="style-tab-btn" data-target="tab-tags"
+            data-l10n-id="zoterostyle-tags-functions"></html:button>
+          <html:button class="style-tab-btn" data-target="tab-collections"
+            data-l10n-id="zoterostyle-collection-functions"></html:button>
+          <html:button class="style-tab-btn" data-target="tab-menu"
+            data-l10n-id="zoterostyle-item-menu-functions"></html:button>
+          <html:button class="style-tab-btn" data-target="tab-storage"
+            data-l10n-id="zoterostyle-storage-functions"></html:button>
+          <html:button class="style-tab-btn" data-target="tab-other"
+            data-l10n-id="zoterostyle-other-functions"></html:button>
+          <html:div id="style-tab-indicator"></html:div>
+        </html:div>
+        <html:button class="style-tab-arrow" id="style-tab-prev">&#x2039;</html:button>
+        <html:button class="style-tab-arrow" id="style-tab-next">&#x203a;</html:button>
+      </html:div>
+
+      <!-- Tab content area with padding -->
+      <html:div style="padding:1em 1.2em;">
+
+      <!-- ── Tab: 条目面板 ── -->
+      <html:div class="style-tab-content" id="tab-columns" style="display:block;">
+        <html:div class="tab-info-card">
+          <html:div class="tab-info-icon-wrap tab-icon-columns"></html:div>
+          <html:div class="tab-info-body">
+            <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-columns-title"></html:div>
+            <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-columns-desc"></html:div>
+            <html:div class="tab-info-steps">
+              <html:span class="tab-step"><html:span class="tab-step-num">1</html:span><html:span data-l10n-id="zoterostyle-tab-step-columns-1"></html:span></html:span>
+              <html:span class="tab-step-arrow">›</html:span>
+              <html:span class="tab-step"><html:span class="tab-step-num">2</html:span><html:span data-l10n-id="zoterostyle-tab-step-columns-2"></html:span></html:span>
+              <html:span class="tab-step-arrow">›</html:span>
+              <html:span class="tab-step"><html:span class="tab-step-num">3</html:span><html:span data-l10n-id="zoterostyle-tab-step-columns-3"></html:span></html:span>
+            </html:div>
+          </html:div>
+        </html:div>
+        <html:div class="checkbox-grid" style="margin-top:0.5em;">
+          <vbox>
+            <checkbox native="true" data-l10n-id="zoterostyle-Column-Title"
+              preference="extensions.zotero.zoterostyle.function.titleColumn.enable" />
+            <hbox class="indent">
+              <label data-l10n-id="zoterostyle-Translate-Shortcut"></label>
+              <html:input type="text" class="shortcut" style="width:8em;"
+                preference="extensions.zotero.zoterostyle.titleTranslate.shortcut" />
+            </hbox>
+          </vbox>
+          <checkbox native="true" data-l10n-id="zoterostyle-Column-Read-Time"
+            preference="extensions.zotero.zoterostyle.function.readTimeColumn.enable" />
+          <checkbox native="true" data-l10n-id="zoterostyle-column-Tags"
+            preference="extensions.zotero.zoterostyle.function.tagsColumn.enable" />
+          <checkbox native="true" data-l10n-id="zoterostyle-Column-TextTags"
+            preference="extensions.zotero.zoterostyle.function.textTagsColumn.enable" />
+          <vbox>
+            <checkbox native="true" data-l10n-id="zoterostyle-Column-Rating"
+              preference="extensions.zotero.zoterostyle.function.ratingColumn.enable" />
+            <hbox class="rating-storage-control" align="center">
+              <label control="rating-storage-select"
+                data-l10n-id="zoterostyle-rating-storage-location"></label>
+              <menulist id="rating-storage-select" native="true" style="min-width:11em;"
+                preference="extensions.zotero.zoterostyle.ratingColumn.storage">
+                <menupopup>
+                  <menuitem value="extra" data-l10n-id="zoterostyle-rating-storage-extra" />
+                  <menuitem value="tag" data-l10n-id="zoterostyle-rating-storage-tag" />
+                </menupopup>
+              </menulist>
+            </hbox>
+          </vbox>
+          <checkbox native="true" data-l10n-id="zoterostyle-Column-Status"
+            preference="extensions.zotero.zoterostyle.function.statusColumn.enable" />
+          <checkbox native="true" data-l10n-id="zoterostyle-Column-Remark"
+            preference="extensions.zotero.zoterostyle.function.remarkColumn.enable" />
+          <checkbox native="true" data-l10n-id="zoterostyle-Column-Annotation"
+            preference="extensions.zotero.zoterostyle.function.annotationColumn.enable" />
+          <checkbox native="true" data-l10n-id="zoterostyle-column-Creator"
+            preference="extensions.zotero.zoterostyle.function.creatorColumn.enable" />
+          <checkbox native="true" data-l10n-id="zoterostyle-Column-Publication"
+            preference="extensions.zotero.zoterostyle.function.publicationColumn.enable" />
+          <checkbox native="true" data-l10n-id="zoterostyle-Column-PublicationTags"
+            preference="extensions.zotero.zoterostyle.function.publicationTagsColumn.enable" />
+          <checkbox native="true" data-l10n-id="zoterostyle-column-IF"
+            preference="extensions.zotero.zoterostyle.function.IFColumn.enable" />
+        </html:div>
+      </html:div>
+
+      <!-- ── Tab: 画廊 ── -->
+      <html:div class="style-tab-content" id="tab-gallery" hidden="true" style="display:none;">
+        <html:div class="tab-info-card">
+          <html:div class="tab-info-icon-wrap tab-icon-gallery"></html:div>
+          <html:div class="tab-info-body">
+            <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-gallery-title"></html:div>
+            <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-gallery-desc"></html:div>
+          </html:div>
+        </html:div>
+        <checkbox native="true" disabled="true" data-l10n-id="zoterostyle-gallery-view-enable"
+          preference="extensions.zotero.zoterostyle.function.galleryView.enable" />
+      </html:div>
+
+      <!-- ── Tab: 列管理 ── -->
+      <html:div class="style-tab-content" id="tab-viewmgr" hidden="true" style="display:none;">
+        <html:div class="tab-info-card">
+          <html:div class="tab-info-icon-wrap tab-icon-viewmgr"></html:div>
+          <html:div class="tab-info-body">
+            <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-viewmgr-title"></html:div>
+            <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-viewmgr-desc"></html:div>
+            <html:div class="tab-info-steps">
+              <html:span class="tab-step"><html:span class="tab-step-num">1</html:span><html:span data-l10n-id="zoterostyle-tab-step-viewmgr-1"></html:span></html:span>
+              <html:span class="tab-step-arrow">›</html:span>
+              <html:span class="tab-step"><html:span class="tab-step-num">2</html:span><html:span data-l10n-id="zoterostyle-tab-step-viewmgr-2"></html:span></html:span>
+              <html:span class="tab-step-arrow">›</html:span>
+              <html:span class="tab-step"><html:span class="tab-step-num">3</html:span><html:span data-l10n-id="zoterostyle-tab-step-viewmgr-3"></html:span></html:span>
+            </html:div>
+          </html:div>
+        </html:div>
+        <checkbox native="true" data-l10n-id="zoterostyle-View-Manager"
+          preference="extensions.zotero.zoterostyle.function.viewManager.enable" />
+        <checkbox native="true" data-l10n-id="zoterostyle-Graph-View"
+          preference="extensions.zotero.zoterostyle.function.graphView.enable" />
+      </html:div>
+
+      <!-- ── Tab: 阅读界面 ── -->
+      <html:div class="style-tab-content" id="tab-reader" hidden="true" style="display:none;">
+        <html:div class="tab-info-card">
+          <html:div class="tab-info-icon-wrap tab-icon-reader"></html:div>
+          <html:div class="tab-info-body">
+            <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-reader-title"></html:div>
+            <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-reader-desc"></html:div>
+            <html:div class="tab-info-steps">
+              <html:span class="tab-step"><html:span class="tab-step-num">1</html:span><html:span data-l10n-id="zoterostyle-tab-step-reader-1"></html:span></html:span>
+              <html:span class="tab-step-arrow">›</html:span>
+              <html:span class="tab-step"><html:span class="tab-step-num">2</html:span><html:span data-l10n-id="zoterostyle-tab-step-reader-2"></html:span></html:span>
+            </html:div>
+          </html:div>
+        </html:div>
+        <checkbox native="true" data-l10n-id="zoterostyle-PDF-Styles"
+          preference="extensions.zotero.zoterostyle.function.PDFStyles.enable" />
+        <hbox>
+          <checkbox native="true" data-l10n-id="zoterostyle-Annotation-Colors"
+            preference="extensions.zotero.zoterostyle.function.annotationColors.enable" />
+          <html:button style="margin-left:10px; width:6em;" id="edit-annotation-colors"
+            data-l10n-id="zoterostyle-Edit"></html:button>
+        </hbox>
+        <checkbox native="true" data-l10n-id="zoterostyle-Merge-Annotations"
+          preference="extensions.zotero.zoterostyle.function.reader.mergeAnnotations.enable" />
+        <checkbox native="true" data-l10n-id="zoterostyle-Attachment-Version-Switch"
+          preference="extensions.zotero.zoterostyle.function.reader.attachmentVersionSwitch.enable" />
+      </html:div>
+
+      <!-- ── Tab: 侧边栏 ── -->
+      <html:div class="style-tab-content" id="tab-sidepanel" hidden="true" style="display:none;">
+        <html:div class="tab-info-card">
+          <html:div class="tab-info-icon-wrap tab-icon-sidepanel"></html:div>
+          <html:div class="tab-info-body">
+            <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-sidepanel-title"></html:div>
+            <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-sidepanel-desc"></html:div>
+            <html:div class="tab-info-steps">
+              <html:span class="tab-step"><html:span class="tab-step-num">1</html:span><html:span data-l10n-id="zoterostyle-tab-step-sidepanel-1"></html:span></html:span>
+              <html:span class="tab-step-arrow">›</html:span>
+              <html:span class="tab-step"><html:span class="tab-step-num">2</html:span><html:span data-l10n-id="zoterostyle-tab-step-sidepanel-2"></html:span></html:span>
+              <html:span class="tab-step-arrow">›</html:span>
+              <html:span class="tab-step"><html:span class="tab-step-num">3</html:span><html:span data-l10n-id="zoterostyle-tab-step-sidepanel-3"></html:span></html:span>
+            </html:div>
+          </html:div>
+        </html:div>
+        <checkbox native="true" data-l10n-id="zoterostyle-Toogle-Sidebar"
+          preference="extensions.zotero.zoterostyle.function.toogleSidebar.enable" />
+        <hbox class="indent">
+          <label data-l10n-id="zoterostyle-Toogle-Left-Sidebar"></label>
+          <html:input type="text" class="shortcut" style="width:8em;"
+            preference="extensions.zotero.zoterostyle.toogleSidebar.left.shortcut" />
+        </hbox>
+        <hbox class="indent">
+          <label data-l10n-id="zoterostyle-Toogle-Right-Sidebar"></label>
+          <html:input type="text" class="shortcut" style="width:8em;"
+            preference="extensions.zotero.zoterostyle.toogleSidebar.right.shortcut" />
+        </hbox>
+        <checkbox native="true" data-l10n-id="zoterostyle-SidePanel-TLDR"
+          preference="extensions.zotero.zoterostyle.function.tldr.enable" />
+        <checkbox native="true" style="margin-left:2em;" data-l10n-id="zoterostyle-Auto-Translate"
+          preference="extensions.zotero.zoterostyle.tldr.autoTranslate" />
+      </html:div>
+
+      <!-- ── Tab: 标签 ── -->
+      <html:div class="style-tab-content" id="tab-tags" hidden="true" style="display:none;">
+        <html:div class="tab-info-card">
+          <html:div class="tab-info-icon-wrap tab-icon-tags"></html:div>
+          <html:div class="tab-info-body">
+            <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-tags-title"></html:div>
+            <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-tags-desc"></html:div>
+            <html:div class="tab-info-steps">
+              <html:span class="tab-step"><html:span class="tab-step-num">1</html:span><html:span data-l10n-id="zoterostyle-tab-step-tags-1"></html:span></html:span>
+              <html:span class="tab-step-arrow">›</html:span>
+              <html:span class="tab-step"><html:span class="tab-step-num">2</html:span><html:span data-l10n-id="zoterostyle-tab-step-tags-2"></html:span></html:span>
+              <html:span class="tab-step-arrow">›</html:span>
+              <html:span class="tab-step"><html:span class="tab-step-num">3</html:span><html:span data-l10n-id="zoterostyle-tab-step-tags-3"></html:span></html:span>
+            </html:div>
+          </html:div>
+        </html:div>
+        <checkbox native="true" data-l10n-id="zoterostyle-Add-Tags"
+          preference="extensions.zotero.zoterostyle.function.addTags.enable" />
+        <hbox class="indent">
+          <label data-l10n-id="zoterostyle-Shortcut"></label>
+          <html:input type="text" class="shortcut" style="width:8em;"
+            preference="extensions.zotero.zoterostyle.addTags.shortcut" />
+        </hbox>
+        <checkbox native="true" data-l10n-id="zoterostyle-Nested-Tags"
+          preference="extensions.zotero.zoterostyle.function.tags.enable" />
+
+      </html:div>
+
+      <!-- ── Tab: 分类面板 ── -->
+      <html:div class="style-tab-content" id="tab-collections" hidden="true" style="display:none;">
+        <html:div class="tab-info-card">
+          <html:div class="tab-info-icon-wrap tab-icon-collections"></html:div>
+          <html:div class="tab-info-body">
+            <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-collections-title"></html:div>
+            <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-collections-desc"></html:div>
+            <html:div class="tab-info-steps">
+              <html:span class="tab-step"><html:span class="tab-step-num">1</html:span><html:span data-l10n-id="zoterostyle-tab-step-collections-1"></html:span></html:span>
+              <html:span class="tab-step-arrow">›</html:span>
+              <html:span class="tab-step"><html:span class="tab-step-num">2</html:span><html:span data-l10n-id="zoterostyle-tab-step-collections-2"></html:span></html:span>
+            </html:div>
+          </html:div>
+        </html:div>
+        <checkbox native="true" data-l10n-id="zoterostyle-Collection-Item-Count"
+          preference="extensions.zotero.zoterostyle.function.collectionItemCount.enable" />
+        <checkbox native="true" data-l10n-id="zoterostyle-Sort-Collection-Item"
+          preference="extensions.zotero.zoterostyle.function.sortCollectionItem.enable" />
+        <checkbox native="true" data-l10n-id="zoterostyle-Favorite-Collections"
+          preference="extensions.zotero.zoterostyle.function.favoriteCollections.enable" />
+        <checkbox native="true" data-l10n-id="zoterostyle-jev-classification-enable"
+          preference="extensions.zotero.zoterostyle.function.jevClassification.enable" />
+        <html:div id="jev-classification-settings" class="indent jev-preference-settings" hidden="true"></html:div>
+      </html:div>
+
+      <!-- ── Tab: 右键菜单 ── -->
+      <html:div class="style-tab-content" id="tab-menu" hidden="true" style="display:none;">
+        <html:div class="tab-info-card">
+          <html:div class="tab-info-icon-wrap tab-icon-menu"></html:div>
+          <html:div class="tab-info-body">
+            <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-menu-title"></html:div>
+            <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-menu-desc"></html:div>
+            <html:div class="tab-info-steps">
+              <html:span class="tab-step"><html:span class="tab-step-num">1</html:span><html:span data-l10n-id="zoterostyle-tab-step-menu-1"></html:span></html:span>
+              <html:span class="tab-step-arrow">›</html:span>
+              <html:span class="tab-step"><html:span class="tab-step-num">2</html:span><html:span data-l10n-id="zoterostyle-tab-step-menu-2"></html:span></html:span>
+            </html:div>
+          </html:div>
+        </html:div>
+        <checkbox native="true" data-l10n-id="zoterostyle-Menu-Visibility-Manager"
+          preference="extensions.zotero.zoterostyle.function.menuVisibility.enable" />
+        <checkbox native="true" data-l10n-id="zoterostyle-Related-Items"
+          preference="extensions.zotero.zoterostyle.function.relatedItems.enable" />
+        <hbox class="indent">
+          <label data-l10n-id="zoterostyle-Shortcut"></label>
+          <html:input type="text" class="shortcut" style="width:8em;"
+            preference="extensions.zotero.zoterostyle.relatedItems.link.shortcut" />
+        </hbox>
+        <vbox>
+          <checkbox native="true" data-l10n-id="zoterostyle-AI-Generate-Tags"
+            preference="extensions.zotero.zoterostyle.function.AIGenerateTags.enable" />
+          <hbox align="center" style="margin-left:2em;">
+            <label data-l10n-id="zoterostyle-Prompt"></label>
+            <html:input type="text" style="width:80%;"
+              preference="extensions.zotero.zoterostyle.AIGenerateTags.prompt" />
+          </hbox>
+        </vbox>
+        <vbox>
+          <checkbox native="true" data-l10n-id="zoterostyle-AI-Generate-Remark"
+            preference="extensions.zotero.zoterostyle.function.AIGenerateRemark.enable" />
+          <hbox align="center" style="margin-left:2em;">
+            <label data-l10n-id="zoterostyle-Prompt"></label>
+            <html:input type="text" style="width:80%;"
+              preference="extensions.zotero.zoterostyle.remarkColumn.prompt" />
+          </hbox>
+        </vbox>
+
+      </html:div>
+
+      <!-- ── Tab: 其它 ── -->
+      <html:div class="style-tab-content" id="tab-other" hidden="true" style="display:none;">
+        <html:div class="tab-info-card">
+          <html:div class="tab-info-icon-wrap tab-icon-other"></html:div>
+          <html:div class="tab-info-body">
+            <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-other-title"></html:div>
+            <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-other-desc"></html:div>
+          </html:div>
+        </html:div>
+        <checkbox native="true" data-l10n-id="zoterostyle-Dark-Light-Button"
+          preference="extensions.zotero.zoterostyle.function.darkLightButton.enable" />
+        <vbox>
+          <checkbox native="true" data-l10n-id="zoterostyle-Use-Styles-from-Editor"
+            preference="extensions.zotero.zoterostyle.function.styleEditor.enable" />
+          <hbox style="margin-left:2em;">
+            <html:button id="open-style-editor" data-l10n-id="zoterostyle-Style-Editor"></html:button>
+            <html:button id="style-editor-help" style="margin-left:.5em;" data-l10n-id="zoterostyle-Help"></html:button>
+          </hbox>
+        </vbox>
+        <html:div style="margin-top:0.8em;">
+          <hbox style="display:flex; align-items:center;">
+            <label data-l10n-id="zoterostyle-record-time-interval"></label>
+            <html:input type="text" style="width:5em;"
+              preference="extensions.zotero.zoterostyle.recordInterval" />
+          </hbox>
+          <hbox style="display:flex; align-items:center;">
+            <label data-l10n-id="zoterostyle-abnormal-fix"></label>
+            <button id="fix-prefs" data-l10n-id="zoterostyle-fix" />
+          </hbox>
+          <hbox style="display:flex; align-items:center;">
+            <label data-l10n-id="zoterostyle-startup-delay-time"></label>
+            <html:input type="text" style="width:2em;"
+              preference="extensions.zotero.zoterostyle.delayTime" />
+          </hbox>
+        </html:div>
+      </html:div>
+
+      <!-- ── Tab: 储存 ── -->
+      <html:div class="style-tab-content" id="tab-storage" hidden="true" style="display:none;">
+        <html:div class="tab-info-card">
+          <html:div class="tab-info-icon-wrap tab-icon-storage"></html:div>
+          <html:div class="tab-info-body">
+            <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-storage-title"></html:div>
+            <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-storage-desc"></html:div>
+            <html:div class="tab-info-steps">
+              <html:span class="tab-step"><html:span class="tab-step-num">1</html:span><html:span data-l10n-id="zoterostyle-tab-step-storage-1"></html:span></html:span>
+              <html:span class="tab-step-arrow">›</html:span>
+              <html:span class="tab-step"><html:span class="tab-step-num">2</html:span><html:span data-l10n-id="zoterostyle-tab-step-storage-2"></html:span></html:span>
+            </html:div>
+          </html:div>
+        </html:div>
+        <radiogroup preference="extensions.zotero.zoterostyle.storage.in">
+          <radio id="storage-note" data-l10n-id="zoterostyle-save-as-note" value="note" />
+          <hbox style="display:flex; align-items:center;">
+            <radio id="storage-file" data-l10n-id="zoterostyle-save-as-file" value="file" disabled="true" />
+            <html:input id="storage-filename"
+              preference="extensions.zotero.zoterostyle.storage.filename"
+              style="width:300px;" readonly="true" flex="1" />
+            <button id="choose-path" data-l10n-id="zoterostyle-Choose" />
+          </hbox>
+        </radiogroup>
+        <html:div class="reading-progress-recording-control" data-recording="true">
+          <html:div class="reading-progress-recording-copy" aria-live="polite">
+            <html:div class="reading-progress-recording-heading">
+              <html:span class="reading-progress-recording-status" aria-hidden="true"></html:span>
+              <html:span class="reading-progress-recording-active"
+                data-l10n-id="zoterostyle-reading-progress-recording-active"></html:span>
+              <html:span class="reading-progress-recording-paused" hidden="true"
+                data-l10n-id="zoterostyle-reading-progress-recording-paused"></html:span>
+            </html:div>
+            <html:div class="reading-progress-recording-description reading-progress-recording-active"
+              data-l10n-id="zoterostyle-reading-progress-recording-active-description"></html:div>
+            <html:div class="reading-progress-recording-description reading-progress-recording-paused" hidden="true"
+              data-l10n-id="zoterostyle-reading-progress-recording-paused-description"></html:div>
+          </html:div>
+          <html:button id="reading-progress-recording-toggle"
+            class="reading-progress-recording-button" type="button"
+            data-recording="true" aria-pressed="true">
+            <html:span class="reading-progress-recording-active">
+              <html:span class="reading-progress-recording-icon-pause"></html:span>
+              <html:span data-l10n-id="zoterostyle-reading-progress-recording-pause"></html:span>
+            </html:span>
+            <html:span class="reading-progress-recording-paused" hidden="true">
+              <html:span class="reading-progress-recording-icon-play"></html:span>
+              <html:span data-l10n-id="zoterostyle-reading-progress-recording-start"></html:span>
+            </html:span>
+          </html:button>
+        </html:div>
+      </html:div>
+
+      </html:div><!-- end content padding wrapper -->
+    </html:div><!-- end bordered card -->
+  </groupbox>
+
+  <!-- ══════════════ PRO FUNCTIONS ══════════════ -->
+  <groupbox class="pro-functions-section">
+    <html:div id="pro-functions">
+
+      <!-- Bordered card: tab nav at top, content below -->
+      <html:div class="style-tab-card" style="border:var(--material-panedivider); border-radius:8px; margin-top:0; overflow:visible;">
+
+        <!-- Tab nav: scrollable strip with floating ‹ › arrows -->
+        <html:div class="style-tabs-wrapper">
+        <html:div class="pro-tabs-nav" id="pro-tabs-scroll" data-pref-key="extensions.zotero.zoterostyle.prefs.proActiveTab">
+            <html:button class="pro-tab-btn" data-active="true" data-target="pro-tab-margin-annot"
+              data-l10n-id="zoterostyle-pro-tab-margin-annot-name"></html:button>
+            <html:button class="pro-tab-btn" data-target="pro-tab-vertabs"
+              data-l10n-id="zoterostyle-pro-tab-vertabs-name"></html:button>
+            <html:button class="pro-tab-btn" data-target="pro-tab-tabmgr"
+              data-l10n-id="zoterostyle-pro-tab-tabmgr-name"></html:button>
+            <html:button class="pro-tab-btn" data-target="pro-tab-cited"
+              data-l10n-id="zoterostyle-pro-tab-cited-name"></html:button>
+            <html:button class="pro-tab-btn" data-target="pro-tab-explore"
+              data-l10n-id="zoterostyle-pro-tab-explore-name"></html:button>
+            <html:button class="pro-tab-btn" data-target="pro-tab-preview"
+              data-l10n-id="zoterostyle-pro-tab-preview-name"></html:button>
+            <html:button class="pro-tab-btn" data-target="pro-tab-backlinks"
+              data-l10n-id="zoterostyle-pro-tab-backlinks-name"></html:button>
+            <html:button class="pro-tab-btn" data-target="pro-tab-notes"
+              data-l10n-id="zoterostyle-pro-tab-notes-name"></html:button>
+            <html:button class="pro-tab-btn" data-target="pro-tab-annot"
+              data-l10n-id="zoterostyle-pro-tab-annot-name"></html:button>
+            <html:div id="pro-tab-indicator"></html:div>
+          </html:div>
+          <html:button class="style-tab-arrow" id="pro-tab-prev">&#x2039;</html:button>
+          <html:button class="style-tab-arrow" id="pro-tab-next">&#x203a;</html:button>
+        </html:div>
+
+        <!-- Tab content area -->
+        <html:div style="padding:1em 1.2em;">
+
+          <!-- ── Tab: 垂直标签页 (free) ── -->
+          <html:div class="pro-tab-content" id="pro-tab-vertabs" hidden="true" style="display:none;">
+            <html:div class="tab-info-card">
+              <html:div class="tab-info-icon-wrap tab-icon-pro-vertabs"></html:div>
+              <html:div class="tab-info-body">
+                <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-pro-vertabs-title"></html:div>
+                <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-pro-vertabs-desc"></html:div>
+                <html:div class="tab-info-steps">
+                  <html:span class="tab-step"><html:span class="tab-step-num">1</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-vertabs-1"></html:span></html:span>
+                  <html:span class="tab-step-arrow">›</html:span>
+                  <html:span class="tab-step"><html:span class="tab-step-num">2</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-vertabs-2"></html:span></html:span>
+                  <html:span class="tab-step-arrow">›</html:span>
+                  <html:span class="tab-step"><html:span class="tab-step-num">3</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-vertabs-3"></html:span></html:span>
+                </html:div>
+              </html:div>
+            </html:div>
+            <checkbox native="true" data-l10n-id="zoterostyle-Vertical-Tab-Manager"
+              preference="extensions.zotero.zoterostyle.function.verticalTabManager.enable" />
+            <checkbox native="true" style="margin-left:2em;" data-l10n-id="zoterostyle-Vertical-Tab-Manager-expand-on-hover"
+              preference="extensions.zotero.zoterostyle.verticalTabManager.expandOnHover" />
+          </html:div>
+
+          <!-- ── Tab: 标签页管理 (pro) ── -->
+          <html:div class="pro-tab-content" id="pro-tab-tabmgr" hidden="true" style="display:none;">
+            <html:div class="tab-info-card">
+              <html:div class="tab-info-icon-wrap tab-icon-pro-tabmgr"></html:div>
+              <html:div class="tab-info-body">
+                <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-pro-tabmgr-title"></html:div>
+                <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-pro-tabmgr-desc"></html:div>
+                <html:div class="tab-info-steps">
+                  <html:span class="tab-step"><html:span class="tab-step-num">1</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-tabmgr-1"></html:span></html:span>
+                  <html:span class="tab-step-arrow">›</html:span>
+                  <html:span class="tab-step"><html:span class="tab-step-num">2</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-tabmgr-2"></html:span></html:span>
+                </html:div>
+              </html:div>
+            </html:div>
+            <checkbox native="true" data-l10n-id="zoterostyle-Tab-Manager" class="pro-function"
+              preference="extensions.zotero.zoterostyle.function.tabManager.enable" />
+            <checkbox native="true" style="margin-left:2em;" data-l10n-id="zoterostyle-Tab-Manager-select-close-UI" class="pro-function"
+              preference="extensions.zotero.zoterostyle.tabManager.selectCloseUI" />
+            <checkbox native="true" style="margin-left:2em;" data-l10n-id="zoterostyle-Tab-Manager-open-tabs-reverse-sort" class="pro-function"
+              preference="extensions.zotero.zoterostyle.tabManager.openTabs.reverseSort" />
+            <hbox style="margin-left:2em; display:flex; align-items:center;">
+              <label class="pro-function" style="display:flex; align-items:center;"
+                data-l10n-id="zoterostyle-Tab-Manager-width"></label>
+              <html:input style="width:2em;" class="pro-function"
+                preference="extensions.zotero.zoterostyle.tabManager.width" />
+              <label>px</label>
+            </hbox>
+          </html:div>
+
+          <!-- ── Tab: 被引数列 (pro) ── -->
+          <html:div class="pro-tab-content" id="pro-tab-cited" hidden="true" style="display:none;">
+            <html:div class="tab-info-card">
+              <html:div class="tab-info-icon-wrap tab-icon-pro-cited"></html:div>
+              <html:div class="tab-info-body">
+                <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-pro-cited-title"></html:div>
+                <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-pro-cited-desc"></html:div>
+                <html:div class="tab-info-steps">
+                  <html:span class="tab-step"><html:span class="tab-step-num">1</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-cited-1"></html:span></html:span>
+                  <html:span class="tab-step-arrow">›</html:span>
+                  <html:span class="tab-step"><html:span class="tab-step-num">2</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-cited-2"></html:span></html:span>
+                </html:div>
+              </html:div>
+            </html:div>
+            <checkbox native="true" data-l10n-id="zoterostyle-Column-Cited-Counts" class="pro-function"
+              preference="extensions.zotero.zoterostyle.function.citedCountColumn.enable" />
+            <html:div style="margin: 8px 0 0 2em;">
+              <html:button id="cited-count-google-verification" type="button"
+                data-l10n-id="zoterostyle-googleScholar-verify-button"></html:button>
+            </html:div>
+          </html:div>
+
+          <!-- ── Tab: 探索面板 (pro) ── -->
+          <html:div class="pro-tab-content" id="pro-tab-explore" hidden="true" style="display:none;">
+            <html:div class="tab-info-card">
+              <html:div class="tab-info-icon-wrap tab-icon-pro-explore"></html:div>
+              <html:div class="tab-info-body">
+                <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-pro-explore-title"></html:div>
+                <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-pro-explore-desc"></html:div>
+                <html:div class="tab-info-steps">
+                  <html:span class="tab-step"><html:span class="tab-step-num">1</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-explore-1"></html:span></html:span>
+                  <html:span class="tab-step-arrow">›</html:span>
+                  <html:span class="tab-step"><html:span class="tab-step-num">2</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-explore-2"></html:span></html:span>
+                </html:div>
+              </html:div>
+            </html:div>
+            <checkbox native="true" data-l10n-id="zoterostyle-SidePanel-Explore" class="pro-function"
+              preference="extensions.zotero.zoterostyle.function.explore.enable" />
+            <checkbox native="true" style="margin-left:2em;" data-l10n-id="zoterostyle-Bibliography" class="pro-function"
+              preference="extensions.zotero.zoterostyle.explore.bibliography" />
+            <checkbox native="true" style="margin-left:2em;" data-l10n-id="zoterostyle-Render-Item-Notes" class="pro-function"
+              preference="extensions.zotero.zoterostyle.function.renderItemNotes.enable" />
+            <checkbox native="true" style="margin-left:2em;" data-l10n-id="zoterostyle-Render-Item-Annotations" class="pro-function"
+              preference="extensions.zotero.zoterostyle.function.renderItemAnnotations.enable" />
+          </html:div>
+
+          <!-- ── Tab: 附件预览 (pro) ── -->
+          <html:div class="pro-tab-content" id="pro-tab-preview" hidden="true" style="display:none;">
+            <html:div class="tab-info-card">
+              <html:div class="tab-info-icon-wrap tab-icon-pro-preview"></html:div>
+              <html:div class="tab-info-body">
+                <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-pro-preview-title"></html:div>
+                <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-pro-preview-desc"></html:div>
+                <html:div class="tab-info-steps">
+                  <html:span class="tab-step"><html:span class="tab-step-num">1</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-preview-1"></html:span></html:span>
+                  <html:span class="tab-step-arrow">›</html:span>
+                  <html:span class="tab-step"><html:span class="tab-step-num">2</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-preview-2"></html:span></html:span>
+                </html:div>
+              </html:div>
+            </html:div>
+            <checkbox native="true" data-l10n-id="zoterostyle-Attachment-Preview" class="pro-function"
+              preference="extensions.zotero.zoterostyle.function.attachmentPreview.enable" />
+          </html:div>
+
+          <!-- ── Tab: 页边标注 (pro) ── -->
+          <html:div class="pro-tab-content" id="pro-tab-margin-annot" style="display:block;">
+            <html:div class="tab-info-card">
+              <html:div class="tab-info-icon-wrap tab-icon-pro-margin-annot"></html:div>
+              <html:div class="tab-info-body">
+                <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-pro-margin-annot-title"></html:div>
+                <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-pro-margin-annot-desc"></html:div>
+                <html:div class="tab-info-steps">
+                  <html:span class="tab-step"><html:span class="tab-step-num">1</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-margin-annot-1"></html:span></html:span>
+                  <html:span class="tab-step-arrow">›</html:span>
+                  <html:span class="tab-step"><html:span class="tab-step-num">2</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-margin-annot-2"></html:span></html:span>
+                  <html:span class="tab-step-arrow">›</html:span>
+                  <html:span class="tab-step"><html:span class="tab-step-num">3</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-margin-annot-3"></html:span></html:span>
+                </html:div>
+              </html:div>
+            </html:div>
+            <checkbox native="true" data-l10n-id="zoterostyle-Margin-Annotation" class="pro-function"
+              preference="extensions.zotero.zoterostyle.function.marginAnnotation.enable" />
+          </html:div>
+
+          <!-- ── Tab: 反向链接 (pro) ── -->
+          <html:div class="pro-tab-content" id="pro-tab-backlinks" hidden="true" style="display:none;">
+            <html:div class="tab-info-card">
+              <html:div class="tab-info-icon-wrap tab-icon-pro-backlinks"></html:div>
+              <html:div class="tab-info-body">
+                <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-pro-backlinks-title"></html:div>
+                <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-pro-backlinks-desc"></html:div>
+                <html:div class="tab-info-steps">
+                  <html:span class="tab-step"><html:span class="tab-step-num">1</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-backlinks-1"></html:span></html:span>
+                  <html:span class="tab-step-arrow">›</html:span>
+                  <html:span class="tab-step"><html:span class="tab-step-num">2</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-backlinks-2"></html:span></html:span>
+                </html:div>
+              </html:div>
+            </html:div>
+            <checkbox class="pro-function" native="true" data-l10n-id="zoterostyle-Backlinks"
+              preference="extensions.zotero.zoterostyle.function.backlinks.enable" />
+          </html:div>
+
+          <!-- ── Tab: 笔记管理 (pro) ── -->
+          <html:div class="pro-tab-content" id="pro-tab-notes" hidden="true" style="display:none;">
+            <html:div class="tab-info-card">
+              <html:div class="tab-info-icon-wrap tab-icon-pro-notes"></html:div>
+              <html:div class="tab-info-body">
+                <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-pro-notes-title"></html:div>
+                <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-pro-notes-desc"></html:div>
+                <html:div class="tab-info-steps">
+                  <html:span class="tab-step"><html:span class="tab-step-num">1</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-notes-1"></html:span></html:span>
+                  <html:span class="tab-step-arrow">›</html:span>
+                  <html:span class="tab-step"><html:span class="tab-step-num">2</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-notes-2"></html:span></html:span>
+                </html:div>
+              </html:div>
+            </html:div>
+            <checkbox native="true" data-l10n-id="zoterostyle-Note-Manager" class="pro-function"
+              preference="extensions.zotero.zoterostyle.function.noteManager.enable" />
+          </html:div>
+
+          <!-- ── Tab: 标注管理 (pro) ── -->
+          <html:div class="pro-tab-content" id="pro-tab-annot" hidden="true" style="display:none;">
+            <html:div class="tab-info-card">
+              <html:div class="tab-info-icon-wrap tab-icon-pro-annot"></html:div>
+              <html:div class="tab-info-body">
+                <html:div class="tab-info-title" data-l10n-id="zoterostyle-tab-info-pro-annot-title"></html:div>
+                <html:div class="tab-info-desc" data-l10n-id="zoterostyle-tab-info-pro-annot-desc"></html:div>
+                <html:div class="tab-info-steps">
+                  <html:span class="tab-step"><html:span class="tab-step-num">1</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-annot-1"></html:span></html:span>
+                  <html:span class="tab-step-arrow">›</html:span>
+                  <html:span class="tab-step"><html:span class="tab-step-num">2</html:span><html:span data-l10n-id="zoterostyle-tab-step-pro-annot-2"></html:span></html:span>
+                </html:div>
+              </html:div>
+            </html:div>
+            <checkbox native="true" data-l10n-id="zoterostyle-Annotation-Manager" class="pro-function"
+              preference="extensions.zotero.zoterostyle.function.annotationManager.enable" />
+            <checkbox class="pro-function" style="margin-left:2em;" native="true"
+              data-l10n-id="zoterostyle-Ignore-figure-table-annotations"
+              preference="extensions.zotero.zoterostyle.annotationManager.ignoreFigureTable" />
+            <checkbox class="pro-function" style="margin-left:2em;" native="true"
+              data-l10n-id="zoterostyle-Replace-annotation-text-with-comment"
+              preference="extensions.zotero.zoterostyle.annotationManager.replaceAnnotationTextWidthComment" />
+            <hbox style="margin-left:2em; display:flex; align-items:center;">
+              <label class="pro-function" style="display:flex; align-items:center;"
+                data-l10n-id="zoterostyle-paper-matrix-auxiliary-fields"></label>
+              <html:input class="pro-function"
+                preference="extensions.zotero.zoterostyle.paperMatrix.auxiliaryFields" />
+              <html:button class="pro-function" style="margin-left:.5em;" id="paper-matrix-core-fields-setting"
+                data-l10n-id="zoterostyle-paper-matrix-core-fields-setting" />
+              <html:button class="pro-function" style="margin-left:.8em;" id="paper-matrix-help"
+                data-l10n-id="zoterostyle-Help" />
+            </hbox>
+            <hbox style="margin-left:2em; display:flex; align-items:center;">
+              <label class="pro-function" style="display:flex; align-items:center;"
+                data-l10n-id="zoterostyle-paper-matrix-layout"></label>
+              <menulist class="pro-function" native="true"
+                preference="extensions.zotero.zoterostyle.paperMatrix.paperDirection">
+                <menupopup>
+                  <menuitem value="row" data-l10n-id="zoterostyle-row-paper-column-field" />
+                  <menuitem value="column" data-l10n-id="zoterostyle-row-field-column-paper" />
+                </menupopup>
+              </menulist>
+            </hbox>
+          </html:div>
+
+        </html:div><!-- end content padding wrapper -->
+      </html:div><!-- end bordered card -->
+    </html:div>
+  </groupbox>
+
+
+  <!-- ══════════════ ABOUT ══════════════ -->
+  <groupbox class="section">
+    <html:h1 data-l10n-id="zoterostyle-about-title"></html:h1>
+    <description><label is="zotero-text-link" data-l10n-id="zoterostyle-about-help"
+        href="https://github.com/MuiseDestiny/zotero-style#zotero-style"></label></description>
+    <description><label is="zotero-text-link" data-l10n-id="zoterostyle-about-history"
+        href="https://github.com/MuiseDestiny/zotero-style/releases"></label></description>
+    <description><label is="zotero-text-link" data-l10n-id="zoterostyle-about-share"
+        href="https://github.com/MuiseDestiny/zotero-style/issues/48"></label></description>
+    <description><label is="zotero-text-link" data-l10n-id="zoterostyle-about-issue"
+        href="https://github.com/MuiseDestiny/zotero-style/issues/new/choose"></label></description>
+    <description><label is="zotero-text-link" data-l10n-id="zoterostyle-about-changelog"
+        href="https://gitee.com/MuiseDestiny/plugins/blob/master/update.md#style"></label></description>
+  </groupbox>
+
+</vbox>
